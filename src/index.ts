@@ -2,7 +2,9 @@ import { getInput, info, setFailed, setOutput, setSecret } from "@actions/core";
 import isBase64 from "is-base64";
 import { createAppAuth } from "@octokit/auth-app";
 
-// fetchInstallationToken will return a token for a GitHub App Installation
+/**
+ * @return {PromiseLike<string>} A token for a GitHub App Installation
+ */
 const fetchInstallationToken = async ({
      appId,
      clientId,
