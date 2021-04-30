@@ -20,13 +20,13 @@ const fetchInstallationToken = async ({
 }>): Promise<string> => {
     const auth = createAppAuth({
         appId: appId,
-        privateKey: privateKey,
         clientId: clientId,
         clientSecret: clientSecret,
+        privateKey: privateKey,
     });
     const installation = await auth({
-        type: "installation",
         installationId: installationId,
+        type: "installation",
     });
     return installation.token
 };

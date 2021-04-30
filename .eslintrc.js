@@ -33,9 +33,7 @@ module.exports = {
         // TypeScript already takes care of that. See https://github.com/bradzacher/eslint-plugin-typescript/issues/110.
         "no-undef": "off",
         "object-shorthand": [
-            "error",
-            "always",
-            { avoidExplicitReturnArrows: true },
+            "off",
         ],
         "sort-destructure-keys/sort-destructure-keys": [
             "error",
