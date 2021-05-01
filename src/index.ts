@@ -1,35 +1,6 @@
 import { getInput, info, setFailed, setOutput, setSecret } from "@actions/core";
 import isBase64 from "is-base64";
-import { createAppAuth } from "@octokit/auth-app";
-
-/**
- * @return {PromiseLike<string>} A token for a GitHub App Installation
- */
-const fetchInstallationToken = async ({
-  appId,
-  clientId,
-  clientSecret,
-  installationId,
-  privateKey,
-}: Readonly<{
-  appId: string;
-  clientId: string;
-  clientSecret: string;
-  installationId: string;
-  privateKey: string;
-}>): Promise<string> => {
-  const auth = createAppAuth({
-    appId: appId,
-    clientId: clientId,
-    clientSecret: clientSecret,
-    privateKey: privateKey,
-  });
-  const installation = await auth({
-    installationId: installationId,
-    type: "installation",
-  });
-  return installation.token;
-};
+import { fetchInstallationToken } from "./fetch-installation-token";
 
 const run = async () => {
   try {
@@ -43,12 +14,11 @@ const run = async () => {
       : privateKeyInput;
 
     const installationToken = await fetchInstallationToken({
-      appId,
-      clientId,
-      clientSecret,
-      installationId,
-      privateKey,
-    });
+      appId: appId,
+      clientId: clientId,
+      clientSecret: clientSecret,
+      privateKey: privateKey,
+    }, installationId);
 
     setSecret(installationToken);
     setOutput("token", installationToken);

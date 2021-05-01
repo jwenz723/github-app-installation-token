@@ -1,13 +1,10 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "noEmitOnError": true,
     "strict": true,
-    "target": "esnext",
-    "types": ["node"]
+    "target": "es2018"
   },
-  "include": [".*.js", "*.js", "src"]
+  "include": [".*.js", "*.js", "src", "tests"]
 }
