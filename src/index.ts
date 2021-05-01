@@ -13,12 +13,15 @@ const run = async () => {
       ? Buffer.from(privateKeyInput, "base64").toString("utf8")
       : privateKeyInput;
 
-    const installationToken = await fetchInstallationToken({
-      appId: appId,
-      clientId: clientId,
-      clientSecret: clientSecret,
-      privateKey: privateKey,
-    }, installationId);
+    const installationToken = await fetchInstallationToken(
+      {
+        appId: appId,
+        clientId: clientId,
+        clientSecret: clientSecret,
+        privateKey: privateKey,
+      },
+      installationId,
+    );
 
     setSecret(installationToken);
     setOutput("token", installationToken);

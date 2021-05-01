@@ -1,4 +1,4 @@
-import { fetchInstallationToken } from '../src/fetch-installation-token';
+import { fetchInstallationToken } from "../src/fetch-installation-token";
 import fetchMock, { MockMatcherFunction } from "fetch-mock";
 import { request } from "@octokit/request";
 
@@ -32,53 +32,56 @@ x//0u+zd/R/QRUzLOw4N72/Hu+UG6MNt5iDZFCtapRaKt6OvSBwy8w==
 -----END RSA PRIVATE KEY-----`;
 
 test("Get token", async () => {
-    const installationId = "123"
-    const matchCreateInstallationAccessToken: MockMatcherFunction = (
-        url,
-        { body, headers }
-    ) => {
-        expect(url).toEqual(
-            `https://api.github.com/app/installations/${installationId}/access_tokens`
-        );
-        expect(headers).toStrictEqual(
-            expect.objectContaining({
-                accept: "application/vnd.github.machine-man-preview+json",
-                "user-agent": "test",
-            })
-        );
-        expect(body).toBeUndefined();
+  const installationId = "123";
+  const matchCreateInstallationAccessToken: MockMatcherFunction = (
+    url,
+    { body, headers },
+  ) => {
+    expect(url).toEqual(
+      `https://api.github.com/app/installations/${installationId}/access_tokens`,
+    );
+    expect(headers).toStrictEqual(
+      expect.objectContaining({
+        accept: "application/vnd.github.machine-man-preview+json",
+        "user-agent": "test",
+      }),
+    );
+    expect(body).toBeUndefined();
 
-        return true;
-    };
+    return true;
+  };
 
-    const createInstallationAccessTokenResponseData = {
-        expires_at: "1970-01-01T01:00:00.000Z",
-        permissions: {
-            metadata: "read",
+  const createInstallationAccessTokenResponseData = {
+    expires_at: "1970-01-01T01:00:00.000Z",
+    permissions: {
+      metadata: "read",
+    },
+    repository_selection: "all",
+    token: "secret123",
+  };
+
+  const token = await fetchInstallationToken(
+    {
+      appId: APP_ID,
+      clientId: "lv1.1234567890abcdef",
+      clientSecret: "1234567890abcdef1234567890abcdef12345678",
+      privateKey: PRIVATE_KEY,
+      request: request.defaults({
+        headers: {
+          "user-agent": "test",
         },
-        repository_selection: "all",
-        token: "secret123",
-    };
+        request: {
+          fetch: fetchMock
+            .sandbox()
+            .postOnce(
+              matchCreateInstallationAccessToken,
+              createInstallationAccessTokenResponseData,
+            ),
+        },
+      }),
+    },
+    installationId,
+  );
 
-    const token = await fetchInstallationToken({
-        appId: APP_ID,
-        clientId: "lv1.1234567890abcdef",
-        clientSecret: "1234567890abcdef1234567890abcdef12345678",
-        privateKey: PRIVATE_KEY,
-        request: request.defaults({
-            headers: {
-                "user-agent": "test",
-            },
-            request: {
-                fetch: fetchMock
-                    .sandbox()
-                    .postOnce(
-                        matchCreateInstallationAccessToken,
-                        createInstallationAccessTokenResponseData
-                    ),
-            },
-        }),
-    }, installationId)
-
-    expect(token).toEqual("secret123");
+  expect(token).toEqual("secret123");
 });
