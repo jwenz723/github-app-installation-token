@@ -16,7 +16,7 @@
     "test": "jest --coverage"
   },
   "devDependencies": {
-    "@actions/core": "^1.2.6",
+    "@actions/core": "^1.10.0",
     "@babel/preset-typescript": "^7.13.0",
     "@octokit/auth-app": "^3.4.0",
     "@octokit/request": "^5.4.15",
